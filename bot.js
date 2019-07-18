@@ -4,7 +4,7 @@ console.log("A.AMR10");
 var prefix = "7";
 client.on("message", message => {
 
-            if (message.content.startsWith(prefix + "7")) {
+            if (message.content.startsWith(prefix + "bc")) {
                          if (!message.member.hasPermission("ADMINISTRATOR"))  return;
   let args = message.content.split(" ").slice(1);
   var argresult = args.join(' '); 
