@@ -158,7 +158,7 @@ message.author.sendMessage(`
 client.on('message', warn => {
     const prefix = '^';
     const log = warn.guild.channels.find(c => c.name === 'log');
-    const all = warn.guild.channels.find(c => c.name === 'public-chat');
+    const all = warn.guild.channels.find(c => c.name === 'warn');
     const user = warn.mentions.members.first();
     const reason = warn.content.split(' ').slice(2).join(' ');
     if (warn.content === `${prefix}warn`) {
