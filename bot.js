@@ -218,30 +218,24 @@ client.on('message', message => {
     }
 });
 
-if(cmd ==="^report"){
-        let wUser = message.guild.member (message.mentions.users.first())  message.guild.members.get(args[0]);
-          if(!wUser) return message.reply("يجب ان تمنشن شخص اول")
-    let reason = args.join(" ").slice(22);
-
-message.channel.send("تم ارسال  الشكوى  الى الادارة العليا  ")
-
-   let embed = new Discord.RichEmbed()
-          .setColor('RANDOM')
-  .addField("reoprt user",${wUser} with id ${wUser.id})
-  .addField("reoprt by",${message.author} with id ${message.author.id})
-  .addField("channel",message.channel)
-  .addField("TIME",message.createdAt)
-  .addField("Reson",reason)
-
-
-  let warnchannel = message.guild.channels.find(name,"bot")
-  if(!warnchannel) return message.reply("لا يجود الشات ")
-
-  message.delete().catch(O_o=>{})
-  warnchannel.send(embed);
-
-
+client.on("message", msg => {
+  if(msg.content === '^' + "id") {
+      const embed = new Discord.RichEmbed();
+  embed.addField("🔱| اسم الحساب :", `${msg.author.username}#${msg.author.discriminator}`, true)
+          .addField("🆔| الاي دي :", `${msg.author.id}`, true)
+          .setColor("RANDOM")
+          .setFooter(msg.author.username , msg.author.avatarURL)
+          .setThumbnail(`${msg.author.avatarURL}`)
+          .setTimestamp()
+          .setURL(`${msg.author.avatarURL}`)
+          .addField('📛| الحالة :', `${msg.author.presence.status.toUpperCase()}`, true)
+          .addField('🎲| بلاينج :', `${msg.author.presence.game === null ? "No Game" : msg.author.presence.game.name}`, true)
+          .addField('🏅| الرتب : ', `${msg.member.roles.filter(r => r.name).size}`, true)
+          .addField('📅| تم الانضمام للديسكورد في :', `${msg.createdAt}`,true)
+          .addField('🤖| هل هو بوت ؟', `${msg.author.bot.toString().toUpperCase()}`, true);
+      msg.channel.send({embed: embed})
   }
+});
 
 
 client.login(process.env.BOT_TOKEN);
