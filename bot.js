@@ -153,5 +153,18 @@ message.author.sendMessage(`
   }
 });
 
+    var prefix = "^"
+  client.on('message',async message => {
+  if(message.content.startsWith(prefix + "رابط")) {
+    let embed = new Discord.RichEmbed()
+    .setColor("RANDOM")
+    .setAuthor(${message.author.username}, message.author.avatarURL)
+    .setTitle(:small_orange_diamond: اضغط هنا)
+    .setURL(Not Now)
+    .setThumbnail(" https://cdn.discordapp.com/avatars/377904849783750667/6c76e412f18c142dfd711d05fb363869.png?size=2048%22) 
+    message.channel.send(embed);
+  }
+});
+
 
 client.login(process.env.BOT_TOKEN);
