@@ -146,6 +146,8 @@ message.author.sendMessage(`
 
 ^kick
 
+رابط البوت:https://discordapp.com/oauth2/authorize?client_id=445026531341762560&permissions=8&scope=bot
+
 **`);
 
   }
