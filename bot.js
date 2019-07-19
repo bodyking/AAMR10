@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 console.log("A.AMR10");
-var prefix = "7";
+var prefix = "^";
 client.on("message", message => {
 
             if (message.content.startsWith(prefix + "bc")) {
@@ -23,11 +23,11 @@ client.on('ready', () => {
       console.log(`ON ${client.guilds.size} Servers '     Script By : black ' `);
     console.log(`----------------`);
   console.log(`Logged in as ${client.user.tag}!`);
-client.user.setGame(`7bc`,"http://twitch.tv/Death Shop")
+client.user.setGame(`^bc`,"http://twitch.tv/Death Shop")
 client.user.setStatus("dnd")
 });
 
-var prefix = '7'; // your prefix
+var prefix = '^'; // your prefix
 client.on('message', message => {
   if(message.content.split(' ')[0] == `${prefix}ban`){
   if(!message.guild || message.author.bot) return undefined;
@@ -66,7 +66,7 @@ client.on('message', async(message) => {
  });
 
 client.on("message", message => {
-  var prefix = "7";
+  var prefix = "^";
   if(message.content.startsWith(prefix + "embed")) {
     
 
@@ -85,7 +85,7 @@ message.channel.send("`Error`:" + Julian)
   });
 
 client.on('message' , async (message) => {
-var prefix = "7"
+var prefix = "^"
     if(message.content.startsWith(prefix + "tInv")) {
 if(message.author.bot) return;
 if(!message.channel.guild) return message.reply(' Error : \` Guild Command \`');
