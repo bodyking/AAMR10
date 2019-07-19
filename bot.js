@@ -27,21 +27,26 @@ client.user.setGame(`7bc`,"http://twitch.tv/Death Shop")
 client.user.setStatus("dnd")
 });
 
-client.on('message', message => {  
-    if (message.author.bot) return; ///Pixel Team
-    if (message.content.startsWith(prefix + 'clear')) { 
-    if(!message.channel.guild) return message.reply(`** This Command For Servers Only**`); 
-     if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send(`** You don't have Premissions!**`);
-     if(!message.guild.member(client.user).hasPermission('MANAGE_GUILD')) return message.channel.send(`**I don't have Permission!**`);
-    let args = message.content.split(" ").slice(1)
-    let messagecount = parseInt(args);
-    if (args > 100) return message.reply(`** The number can't be more than **100** .**`).then(messages => messages.delete(5000))
-    if(!messagecount) args = '100';
-    message.channel.fetchMessages({limit: messagecount}).then(messages => message.channel.bulkDelete(messages)).then(msgs => {
-    message.channel.send(`** Done , Deleted \`${msgs.size}\` messages.**`).then(messages => messages.delete(5000));
-    })
-  }
-});  ///Zine & Zaid
+var prefix = '7'; // your prefix
+client.on('message', message => {
+  if(message.content.split(' ')[0] == `${prefix}ban`){
+  if(!message.guild || message.author.bot) return undefined;
+      if(!message.member.hasPermission('BAN_MEMBERS')) return message.channel.send('You don\'t have permission.');
+      if(!message.guild.member(client.user).hasPermission('BAN_MEMBERS')) return message.channel.send('I don\'t have permission.');
+      let args = message.content.split(" ").slice(1);
+      let user = message.guild.members.get(message.content.split(' ')[1]) || message.mentions.members.first();
+      let reason = message.content.split(" ").slice(2).join(" ");
+      if(!user) return message.channel.send(`Usage: ${prefix}ban @mention reason`);
+      if(!reason) reason = 'No reason provided.';
+      if(user.user.id === message.author.id) return message.channel.send('You can\'t ban yourself!');
+      if(message.guild.member(user.user).highestRole.position >= message.guild.member(message.member).highestRole.position) return message.channel.send(`You can't ban **${user.user.tag}** because his role highest than your role!`);
+     if(message.guild.member(user.user).highestRole.position >= message.guild.member(client.user).highestRole.position) return message.channel.send(`I can't ban **${user.user.tag}** because his role highest than my role!`);
+      if(message.guild.member(user.user).hasPermission('MANAGE_GUILD') || user.user.id == message.guild.owner.id) return message.channel.send(`You can't ban **${user.user.tag}** because he have Administration permissions!`);
+     if(!message.guild.member(user.user).bannable) return message.channel.send(`I can't ban **${user.user.tag}**.`);
+      message.guild.member(user).ban(reason, user);
+      message.channel.send(`Done :+1:, I Banned ${user.user.username} from the server!\nReason: \`\`${reason}\`\``);
+    }
+});
 
 
 client.login(process.env.BOT_TOKEN);
