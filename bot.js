@@ -120,5 +120,27 @@ if (command == "embed") {
 
 });
 
+client.on('message', message => {
+  if (message.author.bot) return;
+   if (message.content === prefix + "help") {
+    
+
+
+
+
+message.author.sendMessage(`
+**
+[❖═════ لتشغيل اللوق Log يجب وجود روم باسم ═══════❖]
+[❖═════════════════════════════❖]
+        لماذا بروبوت ؟
+
+[❖═════════════════════════════❖]
+الاوامر العامة
+
+**`);
+
+  }
+});
+
 
 client.login(process.env.BOT_TOKEN);
