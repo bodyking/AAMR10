@@ -431,18 +431,17 @@ channel.guild.owner.send(`<@!${channelremover.id}>
   },Otime)
   });
 
-client.on('message', message => {  
-  if(message.content.startsWith(`${prefix}invite`)){
-    var embed = new Discord.RichEmbed()
-    .setTitle(">> ClickHere To Add" + `${client.user.username}` + " <<")
-    .setURL("https://discordapp.com/oauth2/authorize?client_id=445026531341762560&permissions=8&scope=bot" + `${client.user.id}` + "")
-    .setTimestamp()
-    .setFooter(`Requested By | ${message.author.username}`)
-    .setColor("RANDOM")
-    message.channel.send(":white_check_mark: | Check Your DM! تم الأرسال بلخاص")
-    message.author.send({embed})
-  }
-});
+client.on('message', message => {
+        if (message.content === "^inv") {
+            if(!message.channel.guild) return;
+        let embed = new Discord.RichEmbed()
+        .setAuthor(${message.author.username}, message.author.avatarURL)
+        .setTitle(:small_orange_diamond: click here)
+        .setURL(https://discordapp.com/oauth2/authorize?client_id=445026531341762560&permissions=8&scope=bot)
+        .setThumbnail(" https://cdn.discordapp.com/avatars/377904849783750667/6c76e412f18c142dfd711d05fb363869.png?size=2048%22)
+     message.channel.sendEmbed(embed);
+       }
+   });
 
 client.on('messageDelete', message => {
 
@@ -1142,34 +1141,6 @@ client.on('message', message => {
       });
   }
 });
-
-client.on("ready", async () => {
-            var guild = client.guilds.get('591167128963514368');
-
-          setInterval(() => {
-          if(!guild) return;
-         var nameon=" Online ♪ :0" ; // يحب ان تبقي الصفر في الاسم المهم يكون موجود
-          var channel1 = guild.channels.get("602239054599290945");
-           channel1.setName(`${nameon.replace(0, guild.members.filter(s => s.presence.status != 'offline').size)}`).catch(err => {
-              if(err) return;
-            });
-          },500);
-         var nameoff=" Offline ♪ :0" ; // يحب ان تبقي الصفر في الاسم المهم يكون موجود
-          var channel2 = guild.channels.get("602239118365163530");
-           channel2 .setName(`${nameoff.replace(0, guild.members.filter(s => s.presence.status == 'offline').size)}`).catch(err => {
-              if(err) return;
-            });
-          },500);
-         var members=" Members♪ :0" ; // يحب ان تبقي الصفر في الاسم المهم يكون موجود
-          var channel3 = guild.channels.get("602239287957913630");
-           channel3 .setName(`${members.replace(0, guild.memberCount}`).catch(err => {
-              if(err) return;
-            });
-          },500);
-
-      
-       
-      });
 
 
 client.login(process.env.BOT_TOKEN);
