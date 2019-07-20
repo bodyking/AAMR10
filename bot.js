@@ -560,5 +560,145 @@ client.on('roleUpdate', (oldRole, newRole) => {
 	})
 });
 
+client.on('channelCreate', channel => {
+
+	if(!channel.guild) return;
+	if(!channel.guild.member(client.user).hasPermission('EMBED_LINKS')) return;
+	if(!channel.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
+
+	var logChannel = channel.guild.channels.find(c => c.name === 'log');
+	if(!logChannel) return;
+
+	if(channel.type === 'text') {
+		var roomType = 'Text';
+	}else
+	if(channel.type === 'voice') {
+		var roomType = 'Voice';
+	}else
+	if(channel.type === 'category') {
+		var roomType = 'Category';
+	}
+
+	channel.guild.fetchAuditLogs().then(logs => {
+		var userID = logs.entries.first().executor.id;
+		var userAvatar = logs.entries.first().executor.avatarURL;
+
+		let channelCreate = new Discord.RichEmbed()
+		.setTitle('**[CHANNEL CREATE]**')
+		.setThumbnail(userAvatar)
+		.setDescription(`**\n**:white_check_mark: Successfully \`\`CREATE\`\` **${roomType}** channel.\n\n**Channel Name:** \`\`${channel.name}\`\` (ID: ${channel.id})\n**By:** <@${userID}> (ID: ${userID})`)
+		.setColor('GREEN')
+		.setTimestamp()
+		.setFooter(channel.guild.name, channel.guild.iconURL)
+
+		logChannel.send(channelCreate);
+	})
+});
+
+client.on('channelDelete', channel => {
+	if(!channel.guild) return;
+	if(!channel.guild.member(client.user).hasPermission('EMBED_LINKS')) return;
+	if(!channel.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
+
+	var logChannel = channel.guild.channels.find(c => c.name === 'log');
+	if(!logChannel) return;
+
+	if(channel.type === 'text') {
+		var roomType = 'Text';
+	}else
+	if(channel.type === 'voice') {
+		var roomType = 'Voice';
+	}else
+	if(channel.type === 'category') {
+		var roomType = 'Category';
+	}
+
+	channel.guild.fetchAuditLogs().then(logs => {
+		var userID = logs.entries.first().executor.id;
+		var userAvatar = logs.entries.first().executor.avatarURL;
+
+		let channelDelete = new Discord.RichEmbed()
+		.setTitle('**[CHANNEL DELETE]**')
+		.setThumbnail(userAvatar)
+		.setDescription(`**\n**:white_check_mark: Successfully \`\`DELETE\`\` **${roomType}** channel.\n\n**Channel Name:** \`\`${channel.name}\`\` (ID: ${channel.id})\n**By:** <@${userID}> (ID: ${userID})`)
+		.setColor('RED')
+		.setTimestamp()
+		.setFooter(channel.guild.name, channel.guild.iconURL)
+
+		logChannel.send(channelDelete);
+	})
+});
+ 
+client.on('channelUpdate', (oldChannel, newChannel) => {
+	if(!oldChannel.guild) return;
+
+	var logChannel = oldChannel.guild.channels.find(c => c.name === 'log');
+	if(!logChannel) return;
+
+	if(oldChannel.type === 'text') {
+		var channelType = 'Text';
+	}else
+	if(oldChannel.type === 'voice') {
+		var channelType = 'Voice';
+	}else
+	if(oldChannel.type === 'category') {
+		var channelType = 'Category';
+	}
+
+	oldChannel.guild.fetchAuditLogs().then(logs => {
+		var userID = logs.entries.first().executor.id;
+		var userAvatar = logs.entries.first().executor.avatarURL;
+
+		if(oldChannel.name !== newChannel.name) {
+			let newName = new Discord.RichEmbed()
+			.setTitle('**[CHANNEL EDIT]**')
+			.setThumbnail(userAvatar)
+			.setColor('BLUE')
+			.setDescription(`**\n**:wrench: Successfully Edited **${channelType}** Channel Name\n\n**Old Name:** \`\`${oldChannel.name}\`\`\n**New Name:** \`\`${newChannel.name}\`\`\n**Channel ID:** ${oldChannel.id}\n**By:** <@${userID}> (ID: ${userID})`)
+			.setTimestamp()
+			.setFooter(oldChannel.guild.name, oldChannel.guild.iconURL)
+
+			logChannel.send(newName);
+		}
+		if(oldChannel.topic !== newChannel.topic) {
+			let newTopic = new Discord.RichEmbed()
+			.setTitle('**[CHANNEL EDIT]**')
+			.setThumbnail(userAvatar)
+			.setColor('BLUE')
+			.setDescription(`**\n**:wrench: Successfully Edited **${channelType}** Channel Topic\n\n**Old Topic:**\n\`\`\`${oldChannel.topic || 'NULL'}\`\`\`\n**New Topic:**\n\`\`\`${newChannel.topic || 'NULL'}\`\`\`\n**Channel:** ${oldChannel} (ID: ${oldChannel.id})\n**By:** <@${userID}> (ID: ${userID})`)
+			.setTimestamp()
+			.setFooter(oldChannel.guild.name, oldChannel.guild.iconURL)
+
+			logChannel.send(newTopic);
+		}
+	})
+});
+
+client.on('guildBanAdd', (guild, user) => {
+
+	if(!guild.member(client.user).hasPermission('EMBED_LINKS')) return;
+	if(!guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
+
+	var logChannel = guild.channels.find(c => c.name === 'log');
+	if(!logChannel) return;
+
+	guild.fetchAuditLogs().then(logs => {
+		var userID = logs.entries.first().executor.id;
+		var userAvatar = logs.entries.first().executor.avatarURL;
+
+		if(userID === client.user.id) return;
+
+		let banInfo = new Discord.RichEmbed()
+		.setTitle('**[BANNED]**')
+		.setThumbnail(userAvatar)
+		.setColor('DARK_RED')
+		.setDescription(`**\n**:airplane: Successfully \`\`BANNED\`\` **${user.username}** From the server!\n\n**User:** <@${user.id}> (ID: ${user.id})\n**By:** <@${userID}> (ID: ${userID})`)
+		.setTimestamp()
+		.setFooter(guild.name, guild.iconURL)
+
+		logChannel.send(banInfo);
+	})
+});
+
 
 client.login(process.env.BOT_TOKEN);
