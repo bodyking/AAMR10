@@ -1,6 +1,33 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
-var prefix = "^";
+const devs = ['434372713289744385','301493032673345537'];
+var prefix = "!";
+const adminprefix = "!"
+const db = require('quick.db');
+const client = new Discord.Client();   
+const giphy = require('giphy-api')();    
+const googl = require('goo.gl');  
+const translate = require('google-translate-api');   
+const fs = require("fs"); 
+const canvas = require("canvas");
+const getYoutubeID = require('get-youtube-id'); 
+const moment = require("moment");  
+const { Client, Util } = require('discord.js');  
+const UserBlocked = new Set(); 
+const jimp = require('jimp');   
+const math = require('math-expression-evaluator'); 
+const stripIndents = require('common-tags').stripIndents;
+const figlet = require('figlet');
+const google = require('google-it'); 
+const antispam = require('discord-anti-spam');
+const zalgo = require('zalgolize');   
+const fetchVideoInfo = require('youtube-info');
+const YouTube = require('simple-youtube-api');
+const ytdl = require('ytdl-core');
+const youtube = new YouTube("AIzaSyAdORXg7UZUo7sePv97JyoDqtQVi3Ll0b8");
+const sql = require("sqlite");
+const dateFormat = require('dateformat'); 
+const pretty = require('pretty-ms')
+
 
 client.on('ready', () => {
   console.log(Logged in as ${client.user.tag}!);
@@ -1156,7 +1183,7 @@ client.on("ready", async () => {
               if(err) return;
             });
           },500);
-         var nameoff=" Offline ♪ :0" ; // يحب ان تبقي الصفر في الاسم المهم يكون موجود
+         var nameoff=" Offline ♪ :0" ; // يحب ان تبقي الصفر في الاسم المهم ي��ون موجود
           var channel2 = guild.channels.get("602239118365163530");
            channel2 .setName(${nameoff.replace(0, guild.members.filter(s => s.presence.status == 'offline').size)}).catch(err => {
               if(err) return;
