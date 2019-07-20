@@ -175,9 +175,11 @@ message.author.sendMessage(`
 
 ^avatar تري صورة البروفايل تبعك
 
+^invite رابط البوت يجيك على الخاص
+
 -------------------------------------------------------
 
-رابط البوت:https://discordapp.com/oauth2/authorize?client_id=445026531341762560&permissions=8&scope=bot
+حصريات معنا ان شاء الله
 
 **`);
 
@@ -411,7 +413,7 @@ client.on('message', message => {
   if(message.content.startsWith(`${prefix}invite`)){
     var embed = new Discord.RichEmbed()
     .setTitle(">> ClickHere To Add" + `${client.user.username}` + " <<")
-    .setURL("https://discordapp.com/oauth2/authorize?client_id=445026531341762560" + `${client.user.id}` + "&permissions=8&scope=bot")
+    .setURL("https://discordapp.com/oauth2/authorize?client_id=445026531341762560&permissions=8&scope=bot" + `${client.user.id}` + "")
     .setTimestamp()
     .setFooter(`Requested By | ${message.author.username}`)
     .setColor("RANDOM")
