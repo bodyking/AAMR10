@@ -1,7 +1,10 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-console.log("A.AMR10");
 var prefix = "^";
+
+client.on('ready', () => {
+  console.log(Logged in as ${client.user.tag}!);
+});
 
 
 
@@ -1141,6 +1144,33 @@ client.on('message', message => {
       });
   }
 });
+
+client.on("ready", async () => {
+            var guild = client.guilds.get('591167128963514368');
+
+          setInterval(() => {
+          if(!guild) return;
+         var nameon=" Online ♪ :0" ; // يحب ان تبقي الصفر في الاسم المهم يكون موجود
+          var channel1 = guild.channels.get("602239054599290945");
+           channel1.setName(${nameon.replace(0, guild.members.filter(s => s.presence.status != 'offline').size)}).catch(err => {
+              if(err) return;
+            });
+          },500);
+         var nameoff=" Offline ♪ :0" ; // يحب ان تبقي الصفر في الاسم المهم يكون موجود
+          var channel2 = guild.channels.get("602239118365163530");
+           channel2 .setName(${nameoff.replace(0, guild.members.filter(s => s.presence.status == 'offline').size)}).catch(err => {
+              if(err) return;
+            });
+          },500);
+         var members=" Members♪ :0" ; // يحب ان تبقي الصفر في الاسم المهم يكون موجود
+          var channel3 = guild.channels.get("602239287957913630");
+           channel3 .setName(${members.replace(0, guild.memberCount}).catch(err => {
+              if(err) return;
+            });
+          },500);
+
+
+      });
 
 
 client.login(process.env.BOT_TOKEN);
