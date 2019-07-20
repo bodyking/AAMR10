@@ -422,5 +422,143 @@ client.on('message', message => {
   }
 });
 
+client.on('messageDelete', message => {
+
+	if(message.author.bot) return;
+	if(message.channel.type === 'dm') return;
+	if(!message.guild.member(client.user).hasPermission('EMBED_LINKS')) return;
+	if(!message.guild.member(client.user).hasPermission('MANAGE_MESSAGES')) return;
+
+	var logChannel = message.guild.channels.find(c => c.name === 'log');
+	if(!logChannel) return;
+
+	let messageDelete = new Discord.RichEmbed()
+	.setTitle('**[MESSAGE DELETE]**')
+	.setColor('RED')
+	.setThumbnail(message.author.avatarURL)
+	.setDescription(`**\n**:wastebasket: Successfully \`\`DELETE\`\` **MESSAGE** In ${message.channel}\n\n**Channel:** \`\`${message.channel.name}\`\` (ID: ${message.channel.id})\n**Message ID:** ${message.id}\n**Sent By:** <@${message.author.id}> (ID: ${message.author.id})\n**Message:**\n\`\`\`${message}\`\`\``)
+	.setTimestamp()
+	.setFooter(message.guild.name, message.guild.iconURL)
+
+	logChannel.send(messageDelete);
+});
+client.on('messageUpdate', (oldMessage, newMessage) => {  
+
+	if(oldMessage.author.bot) return;
+	if(!oldMessage.channel.type === 'dm') return;
+	if(!oldMessage.guild.member(client.user).hasPermission('EMBED_LINKS')) return;
+	if(!oldMessage.guild.member(client.user).hasPermission('MANAGE_MESSAGES')) return;
+
+	var logChannel = oldMessage.guild.channels.find(c => c.name === 'log');
+	if(!logChannel) return;
+
+	if(oldMessage.content.startsWith('https://')) return;
+
+	let messageUpdate = new Discord.RichEmbed()
+	.setTitle('**[MESSAGE EDIT]**')
+	.setThumbnail(oldMessage.author.avatarURL)
+	.setColor('BLUE')
+	.setDescription(`**\n**:wrench: Successfully \`\`EDIT\`\` **MESSAGE** In ${oldMessage.channel}\n\n**Channel:** \`\`${oldMessage.channel.name}\`\` (ID: ${oldMessage.channel.id})\n**Message ID:** ${oldMessage.id}\n**Sent By:** <@${oldMessage.author.id}> (ID: ${oldMessage.author.id})\n\n**Old Message:**\`\`\`${oldMessage}\`\`\`\n**New Message:**\`\`\`${newMessage}\`\`\``)
+	.setTimestamp()
+	.setFooter(oldMessage.guild.name, oldMessage.guild.iconURL)
+
+	logChannel.send(messageUpdate);
+});
+
+client.on('roleCreate', role => {
+
+	if(!role.guild.member(client.user).hasPermission('EMBED_LINKS')) return;
+	if(!role.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
+
+	var logChannel = role.guild.channels.find(c => c.name === 'log');
+	if(!logChannel) return;
+
+	role.guild.fetchAuditLogs().then(logs => {
+		var userID = logs.entries.first().executor.id;
+		var userAvatar = logs.entries.first().executor.avatarURL;
+
+		let roleCreate = new Discord.RichEmbed()
+		.setTitle('**[ROLE CREATE]**')
+		.setThumbnail(userAvatar)
+		.setDescription(`**\n**:white_check_mark: Successfully \`\`CREATE\`\` Role.\n\n**Role Name:** \`\`${role.name}\`\` (ID: ${role.id})\n**By:** <@${userID}> (ID: ${userID})`)
+		.setColor('GREEN')
+		.setTimestamp()
+		.setFooter(role.guild.name, role.guild.iconURL)
+
+		logChannel.send(roleCreate);
+	})
+});
+
+client.on('roleDelete', role => {
+
+	if(!role.guild.member(client.user).hasPermission('EMBED_LINKS')) return;
+	if(!role.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
+
+	var logChannel = role.guild.channels.find(c => c.name === 'log');
+	if(!logChannel) return;
+
+	role.guild.fetchAuditLogs().then(logs => {
+		var userID = logs.entries.first().executor.id;
+		var userAvatar = logs.entries.first().executor.avatarURL;
+
+		let roleDelete = new Discord.RichEmbed()
+		.setTitle('**[ROLE DELETE]**')
+		.setThumbnail(userAvatar)
+		.setDescription(`**\n**:white_check_mark: Successfully \`\`DELETE\`\` Role.\n\n**Role Name:** \`\`${role.name}\`\` (ID: ${role.id})\n**By:** <@${userID}> (ID: ${userID})`)
+		.setColor('RED')
+		.setTimestamp()
+		.setFooter(role.guild.name, role.guild.iconURL)
+
+		logChannel.send(roleDelete);
+	})
+});
+
+client.on('roleUpdate', (oldRole, newRole) => {
+
+	if(!oldRole.guild.member(client.user).hasPermission('EMBED_LINKS')) return;
+	if(!oldRole.guild.member(client.user).hasPermission('VIEW_AUDIT_LOG')) return;
+
+	var logChannel = oldRole.guild.channels.find(c => c.name === 'log');
+	if(!logChannel) return;
+
+	oldRole.guild.fetchAuditLogs().then(logs => {
+		var userID = logs.entries.first().executor.id;
+		var userAvatar = logs.entries.first().executor.avatarURL;
+
+		if(oldRole.name !== newRole.name) {
+			let roleUpdateName = new Discord.RichEmbed()
+			.setTitle('**[ROLE NAME UPDATE]**')
+			.setThumbnail(userAvatar)
+			.setColor('BLUE')
+			.setDescription(`**\n**:white_check_mark: Successfully \`\`EDITED\`\` Role Name.\n\n**Old Name:** \`\`${oldRole.name}\`\`\n**New Name:** \`\`${newRole.name}\`\`\n**Role ID:** ${oldRole.id}\n**By:** <@${userID}> (ID: ${userID})`)
+			.setTimestamp()
+			.setFooter(oldRole.guild.name, oldRole.guild.iconURL)
+
+			logChannel.send(roleUpdateName);
+		}
+		if(oldRole.hexColor !== newRole.hexColor) {
+			if(oldRole.hexColor === '#000000') {
+				var oldColor = '`Default`';
+			}else {
+				var oldColor = oldRole.hexColor;
+			}
+			if(newRole.hexColor === '#000000') {
+				var newColor = '`Default`';
+			}else {
+				var newColor = newRole.hexColor;
+			}
+			let roleUpdateColor = new Discord.RichEmbed()
+			.setTitle('**[ROLE COLOR UPDATE]**')
+			.setThumbnail(userAvatar)
+			.setColor('BLUE')
+			.setDescription(`**\n**:white_check_mark: Successfully \`\`EDITED\`\` **${oldRole.name}** Role Color.\n\n**Old Color:** ${oldColor}\n**New Color:** ${newColor}\n**Role ID:** ${oldRole.id}\n**By:** <@${userID}> (ID: ${userID})`)
+			.setTimestamp()
+			.setFooter(oldRole.guild.name, oldRole.guild.iconURL)
+
+			logChannel.send(roleUpdateColor);
+		}
+	})
+});
+
 
 client.login(process.env.BOT_TOKEN);
