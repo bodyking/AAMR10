@@ -407,5 +407,18 @@ channel.guild.owner.send(`<@!${channelremover.id}>
   },Otime)
   });
 
+client.on('message', message => {  
+  if(message.content.startsWith(`${prefix}invite`)){
+    var embed = new Discord.RichEmbed()
+    .setTitle(">> ClickHere To Add" + `${client.user.username}` + " <<")
+    .setURL("https://discordapp.com/oauth2/authorize?client_id=445026531341762560" + `${client.user.id}` + "&permissions=8&scope=bot")
+    .setTimestamp()
+    .setFooter(`Requested By | ${message.author.username}`)
+    .setColor("RANDOM")
+    message.channel.send(":white_check_mark: | Check Your DM! تم الأرسال بلخاص")
+    message.author.send({embed})
+  }
+});
+
 
 client.login(process.env.BOT_TOKEN);
