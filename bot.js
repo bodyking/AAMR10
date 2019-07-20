@@ -1134,5 +1134,14 @@ client.on('message', async message => {
       
       });
 
+client.on('message', message => {
+  if (message.channel.id === "602233656920244224") {
+    message.react('☑')
+      .then(() => {
+        message.react('🚫')
+      });
+  }
+});
+
 
 client.login(process.env.BOT_TOKEN);
